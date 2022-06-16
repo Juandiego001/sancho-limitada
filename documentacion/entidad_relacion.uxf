@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>50</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Producto
+--
+&lt;&lt;Pk&gt;&gt; codigo: entero
+categoria: texto
+nombre: texto
+precio: real
+cantidadBodega: entero
+estado: caracter
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>330</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Cliente
+--
+&lt;&lt;Pk&gt;&gt; cedula: entero
+nombre: texto
+direccion: texto
+telefono: entero
+foto: texto
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>50</y>
+      <w>210</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Factura
+--
+&lt;&lt;Pk&gt;&gt; codigo: entero
+fecha: fecha
+metodo: texto
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>20</x>
+      <y>280</y>
+      <w>300</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>Notas.
+
+1. El atributo de foto almacenará la dirección
+del archivo donde está almacenada la foto
+de perfil del cliente.
+
+2. El atributo estado de tipo caracter,
+tiene como dominio el conjunto {'A', 'I'}
+donde 'A' corresponde a "activo" y el caracter
+'I' corresponde a "inactivo".
+
+3. Detalle_Producto es una entidad
+que se utiliza para realizar el rompimiento 
+de muchos a muchos.
+bg=blue
+fg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>230</y>
+      <w>70</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..*
+m2=1
+solicita</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>50</y>
+      <w>240</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>Detalle_Producto
+--
+&lt;&lt;Pk&gt;&gt;&lt;&lt;Fk&gt;&gt; codigo_factura: entero
+&lt;&lt;Pk&gt;&gt;&lt;&lt;Fk&gt;&gt; codigo_producto: entero
+cantidad: entero
+valorTotal: real
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>100</y>
+      <w>130</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..*
+m2=1
+contiene</panel_attributes>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>100</y>
+      <w>130</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..*
+m2=1
+provee</panel_attributes>
+    <additional_attributes>110.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+</diagram>
