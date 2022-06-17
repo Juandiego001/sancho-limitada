@@ -1,6 +1,52 @@
 {% extends 'layout.html' %}
 {% block body %}
+<!-- Registrar -->
+<h2 class="w-100 text-center py-3">Registrar productos</h2>
+<div class="w-100">
+    <form class="w-75 mx-auto">
+        <div class="mb-2">
+            <label class="form-label"  for="codigo">Código</label>
+            <input class="form-control" type="text" name="codigo" id="codigo" placeholder="123" />
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label" for="categoria">Categoría</label>
+            <input class="form-control" type="text" name="cateogria" id="cateogria" placeholder="Ej: Talla XXL" />
+        </div>
+
+        
+        <div class="mb-2">
+            <label class="form-label" for="nombre">Nombre</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Camiseta de cuadros" />
+        </div>
 
 
+        <div class="mb-2">
+            <label class="form-label" for="precio">Precio</label>
+            <input class="form-control" type="number" name="precio" id="precio" placeholder="4000" />
+        </div>
+
+
+        <div class="mb-2">
+            <label class="form-label" for="cantidad">Cantidad en bódega</label>
+            <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="2" />
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label" for="estado">Estado</label>
+            <input class="form-control" type="text" name="estado" id="estado" placeholder="Activo" />
+        </div>
+
+        <div class="w-100 d-flex justify-content-center my-5">
+            <button type="submit" class="btn btn-primary w-50">Registrar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Editar -->
+<h2 class="w-100 text-center py-3">Editar productos</h2>
+<div class="w-100">
+    
+</div>
 
 {% endblock %}

@@ -1,5 +1,47 @@
 {% extends 'layout.html' %}
 {% block body %}
+<!-- Registrar -->
+<h2 class="w-100 text-center py-3">Registrar clientes</h2>
+<div class="w-100">
+    <form class="w-75 mx-auto">
+        <div class="mb-2">
+            <label class="form-label"  for="cedula">Cédula</label>
+            <input class="form-control" type="number" name="cedula" id="cedula" placeholder="1005404989" />
+        </div>
+        
+        <div class="mb-2">
+            <label class="form-label" for="nombre">Nombre</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Juan Diego Cobo Cabal" />
+        </div>
+
+
+        <div class="mb-2">
+            <label class="form-label" for="direccion">Direccion</label>
+            <input class="form-control" type="text" name="direccion" id="direccion" placeholder="Calle 57N #34-12" />
+        </div>
+
+
+        <div class="mb-2">
+            <label class="form-label" for="telefono">Teléfono</label>
+            <input class="form-control" type="number" name="telefono" id="telefono" placeholder="3148240987" />
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label" for="foto">Foto</label>
+            <input class="form-control" type="file" name="foto" id="foto" />
+        </div>
+
+        <div class="w-100 d-flex justify-content-center my-5">
+            <button type="submit" class="btn btn-primary w-50">Registrar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Editar -->
+<h2 class="w-100 text-center py-3">Editar clientes</h2>
+<div class="w-100">
+    
+</div>
 
 
 

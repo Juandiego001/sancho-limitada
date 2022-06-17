@@ -1,20 +1,22 @@
 from flask import Flask, request, render_template
-from flask_mysqldb import MySQL
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-
 # Configuración de la db
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_DB'] = 'sancho_limitada'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/sancho_limitada'
+app.config[' SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-mysql = MySQL()
+db = SQLAlchemy(app)
 
+# Index
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+# Modelos
+from models.clientesModel import *
 
 # Rutas
 from routes.clientesRoutes import *

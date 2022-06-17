@@ -36,7 +36,7 @@ estado: caracter
 nombre: texto
 direccion: texto
 telefono: entero
-foto: texto
+foto: texto [0..1]
 --
 
 </panel_attributes>
@@ -55,6 +55,7 @@ foto: texto
 &lt;&lt;Pk&gt;&gt; codigo: entero
 fecha: fecha
 metodo: texto
+valorTotal: real [0..1]
 --
 
 </panel_attributes>
@@ -82,6 +83,11 @@ donde 'A' corresponde a "activo" y el caracter
 3. Detalle_Producto es una entidad
 que se utiliza para realizar el rompimiento 
 de muchos a muchos.
+
+4. Se coloca el valor total como opcional
+ya que inicialmente es posible que la
+factura solo tega la instancia
+mas no el calculo completo de la compra.
 bg=blue
 fg=white</panel_attributes>
     <additional_attributes/>
@@ -108,12 +114,12 @@ solicita</panel_attributes>
       <w>240</w>
       <h>190</h>
     </coordinates>
-    <panel_attributes>Detalle_Producto
+    <panel_attributes>Detalle
 --
+&lt;&lt;Pk&gt;&gt; id: entero
 &lt;&lt;Pk&gt;&gt;&lt;&lt;Fk&gt;&gt; codigo_factura: entero
 &lt;&lt;Pk&gt;&gt;&lt;&lt;Fk&gt;&gt; codigo_producto: entero
 cantidad: entero
-valorTotal: real
 --
 
 </panel_attributes>
