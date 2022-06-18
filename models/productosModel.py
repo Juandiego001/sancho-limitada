@@ -1,6 +1,6 @@
 from server import db
 
-class Producto(db.Model):
+class Productos(db.Model):
     cedula = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     direccion = db.Column(db.String(60), nullable=False)

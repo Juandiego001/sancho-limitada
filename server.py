@@ -14,10 +14,6 @@ db = SQLAlchemy(app)
 def index():
     return render_template('index.html')
 
-
-# Modelos
-from models.clientesModel import *
-
 # Rutas
 from routes.clientesRoutes import *
 from routes.productosRoutes import *

@@ -3,18 +3,25 @@ CREATE DATABASE sancho_limitada;
 
 use sancho_limitada;
 
+-- Eliminación previa de tablas (si es que ya están creadas)
+DROP TABLE DETALLES;
+DROP TABLE PRODUCTOS;
+DROP TABLE FACTURAS;
+DROP TABLE CLIENTES;
+
 -- Creación de tablas
 CREATE TABLE CLIENTES(
-    cedula INTEGER PRIMARY KEY,
+    cedula BIGINT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     direccion VARCHAR(60) NOT NULL,
     telefono BIGINT NOT NULL,
-    foto VARCHAR(50) NULL
+    foto INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT chk_foto_1 CHECK (foto = 1 OR foto = 0)
 );
 
 CREATE TABLE FACTURAS(
-    codigo INTEGER AUTO_INCREMENT NOT NULL,
-    cedula_cliente INTEGER NOT NULL,
+    codigo BIGINT AUTO_INCREMENT NOT NULL,
+    cedula_cliente BIGINT NOT NULL,
     fecha DATE NOT NULL,
     metodo VARCHAR(30) NOT NULL,
     valorTotal FLOAT NULL,
@@ -27,7 +34,7 @@ CREATE TABLE FACTURAS(
 );
 
 CREATE TABLE PRODUCTOS(
-    codigo INTEGER PRIMARY KEY,
+    codigo BIGINT PRIMARY KEY,
     categoria VARCHAR(30) NOT NULL,
     nombre VARCHAR(60) NOT NULL,
     precio FLOAT NOT NULL,
@@ -37,9 +44,9 @@ CREATE TABLE PRODUCTOS(
 );
 
 CREATE TABLE DETALLES(
-    id INTEGER NOT NULL AUTO_INCREMENT,
-    codigo_factura INTEGER NOT NULL,
-    codigo_producto INTEGER NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    codigo_factura BIGINT NOT NULL,
+    codigo_producto BIGINT NOT NULL,
     cantidad INTEGER NOT NULL,
 
     PRIMARY KEY(id),
@@ -64,7 +71,7 @@ VALUES(321, 'Fulano', 'Calle 29 #23-08', 666591315);
 -- Factura que registra la compra de 1 producto 10 veces
 -- al cliente de cédula 123
 INSERT INTO PRODUCTOS VALUES(1, 'Talla XXL', 'Camisa', 50000, 100, 'A');
-INSERT INTO FACTURAS(cedula_cliente, fecha, metodo) VALUES(123, '2022-06-17', 'Credit card', 500000);
+INSERT INTO FACTURAS(cedula_cliente, fecha, metodo) VALUES(123, '2022-06-17', 'Credit card');
 INSERT INTO DETALLES(codigo_factura, codigo_producto, cantidad)
 VALUES(1, 1, 10);
 

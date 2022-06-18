@@ -3,7 +3,7 @@
 <!-- Registrar -->
 <h2 class="w-100 text-center py-3">Registrar clientes</h2>
 <div class="w-100">
-    <form class="w-75 mx-auto">
+    <form class="w-75 mx-auto" action="{{ url_for('clientesRoutePost') }}" method="POST" enctype="multipart/form-data">
         <div class="mb-2">
             <label class="form-label"  for="cedula">Cédula</label>
             <input class="form-control" type="number" name="cedula" id="cedula" placeholder="1005404989" />
@@ -37,10 +37,69 @@
     </form>
 </div>
 
-<!-- Editar -->
+<!-- Editar y Eliminar-->
 <h2 class="w-100 text-center py-3">Editar clientes</h2>
-<div class="w-100">
-    
+<div class="w-100 m-0 mb-5">
+
+    <!-- Encabezados de tabla -->
+    <div class="row justify-content-center m-0 px-5" >
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Cédula
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Nombre
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Dirección
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Teléfono
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Foto
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            <!-- Hace referencia a las acciones de borrar o editar -->
+        </div>
+    </div>
+
+    {% for cliente in clientes %}
+
+    <div class="row justify-content-center m-0 px-5" >
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            {{cliente.cedula}}
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            {{cliente.nombre}}
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            {{cliente.direccion}}
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            {{cliente.telefono}}
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            {% if cliente.foto == 1 %}
+                <img src="{{ url_for('static', filename=cliente.cedula|string + '.jpg')}}" 
+                    class="w-50" />
+            {% else %}
+                No tiene
+            {% endif %}
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            <a class="btn btn-primary me-2" 
+                href="{{ url_for('clientesRoutePut', cedula=cliente.cedula, cliente=cliente) }}">
+                Editar
+            </a>
+
+            <a class="btn btn-danger"
+                href="{{ url_for('clientesRouteDelete', cedula=cliente.cedula) }}">
+                Borrar
+            </a>
+        </div>
+    </div>
+
+    {% endfor %}
 </div>
 
 

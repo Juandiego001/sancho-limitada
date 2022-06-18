@@ -36,7 +36,7 @@ estado: caracter
 nombre: texto
 direccion: texto
 telefono: entero
-foto: texto [0..1]
+foto: entero [0..1]
 --
 
 </panel_attributes>
@@ -152,5 +152,27 @@ m1=0..*
 m2=1
 provee</panel_attributes>
     <additional_attributes>110.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>350</x>
+      <y>280</y>
+      <w>300</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>Notas.
+
+5. Se coloca el atributo 'foto'
+de la entidad Cliente como entero,
+ya que la foto se guardara con el mismo
+nombre que la cédula del cliente. Por lo cual,
+solo será una variable booleana que
+determinará si existe o no la foto.
+El dominio de esta variable perse es {1, 0}
+donde 1: Verdadero, 0: Falso.
+bg=blue
+fg=white</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
