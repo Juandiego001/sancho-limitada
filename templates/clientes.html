@@ -4,37 +4,37 @@
 <h2 class="w-100 text-center py-3">Registrar clientes</h2>
 <div class="w-100">
     <form class="w-75 mx-auto" action="{{ url_for('clientesRoutePost') }}" method="POST" enctype="multipart/form-data">
-        <div class="mb-2">
-            <label class="form-label"  for="cedula">Cédula</label>
-            <input class="form-control" type="number" name="cedula" id="cedula" placeholder="1005404989" />
-        </div>
-        
-        <div class="mb-2">
-            <label class="form-label" for="nombre">Nombre</label>
-            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Juan Diego Cobo Cabal" />
-        </div>
+            <div class="mb-2">
+                <label class="form-label"  for="cedula">Cédula</label>
+                <input class="form-control" type="number" name="cedula" id="cedula" placeholder="1005404989" required />
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label" for="nombre">Nombre</label>
+                <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Juan Diego Cobo Cabal" required />
+            </div>
 
 
-        <div class="mb-2">
-            <label class="form-label" for="direccion">Direccion</label>
-            <input class="form-control" type="text" name="direccion" id="direccion" placeholder="Calle 57N #34-12" />
-        </div>
+            <div class="mb-2">
+                <label class="form-label" for="direccion">Direccion</label>
+                <input class="form-control" type="text" name="direccion" id="direccion" placeholder="Calle 57N #34-12" required />
+            </div>
 
 
-        <div class="mb-2">
-            <label class="form-label" for="telefono">Teléfono</label>
-            <input class="form-control" type="number" name="telefono" id="telefono" placeholder="3148240987" />
-        </div>
+            <div class="mb-2">
+                <label class="form-label" for="telefono">Teléfono</label>
+                <input class="form-control" type="number" name="telefono" id="telefono" placeholder="3148240987" required />
+            </div>
 
-        <div class="mb-2">
-            <label class="form-label" for="foto">Foto</label>
-            <input class="form-control" type="file" name="foto" id="foto" />
-        </div>
+            <div class="mb-2">
+                <label class="form-label" for="foto">Foto</label>
+                <input class="form-control" type="file" name="foto" id="foto" />
+            </div>
 
-        <div class="w-100 d-flex justify-content-center my-5">
-            <button type="submit" class="btn btn-primary w-50">Registrar</button>
-        </div>
-    </form>
+            <div class="w-100 d-flex justify-content-center my-5">
+                <button type="submit" class="btn btn-primary w-50">Registrar</button>
+            </div>
+        </form>
 </div>
 
 <!-- Editar y Eliminar-->
@@ -87,7 +87,7 @@
             {% endif %}
         </div>
         <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
-            <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalEditar">
+            <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalEditar{{ cliente.cedula }}">
                 Editar
             </a>
             
@@ -99,7 +99,7 @@
     </div>
 
     <!-- Modal para realizar la actualización del cliente -->
-    <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditar" aria-hidden="true">
+    <div class="modal fade" id="modalEditar{{ cliente.cedula }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditar" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -131,11 +131,13 @@
                         </div>
                     
                         <div class="mb-2">
-                            <label class="form-label">Foto</label>
                             {% if cliente.foto == 1 %}
-                                <br><img class="w-50 mb-3" src="{{ url_for('static', filename=cliente.cedula|string + '.jpg')}}" /><br>
+                                <p>Foto</p>
+                                <img class="w-50 mb-3" src="{{ url_for('static', filename=cliente.cedula|string + '.jpg')}}" /><br>
+                                <label class="form-label" for="eliminarFoto">Eliminar foto</label>
+                                <input type="checkbox" name="eliminarFoto" id="eliminarFoto" class="form-check-input" /><br>
                             {% else %}
-                                No tiene
+                                <p>No tiene foto</p>
                             {% endif %}
                             <label class="form-label" for="foto">Agregar nueva foto</label>
                             <input class="form-control" type="file" name="foto" id="foto" />
@@ -152,7 +154,5 @@
 
 {% endfor %}
 </div>
-
-
 
 {% endblock %}

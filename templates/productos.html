@@ -3,38 +3,38 @@
 <!-- Registrar -->
 <h2 class="w-100 text-center py-3">Registrar productos</h2>
 <div class="w-100">
-    <form class="w-75 mx-auto">
+    <form class="w-75 mx-auto" method="POST" action="{{ url_for('productosRoutePost') }}">
         <div class="mb-2">
             <label class="form-label"  for="codigo">Código</label>
-            <input class="form-control" type="text" name="codigo" id="codigo" placeholder="123" />
+            <input class="form-control" type="text" name="codigo" id="codigo" placeholder="123" required />
         </div>
 
         <div class="mb-2">
             <label class="form-label" for="categoria">Categoría</label>
-            <input class="form-control" type="text" name="cateogria" id="cateogria" placeholder="Ej: Talla XXL" />
+            <input class="form-control" type="text" name="categoria" id="categoria" placeholder="Ej: Talla XXL" required />
         </div>
 
         
         <div class="mb-2">
             <label class="form-label" for="nombre">Nombre</label>
-            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Camiseta de cuadros" />
+            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Camiseta de cuadros" required />
         </div>
 
 
         <div class="mb-2">
             <label class="form-label" for="precio">Precio</label>
-            <input class="form-control" type="number" name="precio" id="precio" placeholder="4000" />
+            <input class="form-control" type="number" name="precio" id="precio" placeholder="4000" required />
         </div>
 
 
         <div class="mb-2">
-            <label class="form-label" for="cantidad">Cantidad en bódega</label>
-            <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="2" />
+            <label class="form-label" for="cantidadBodega">Cantidad en bodega</label>
+            <input class="form-control" type="number" name="cantidadBodega" id="cantidadBodega" placeholder="2" required />
         </div>
 
         <div class="mb-2">
-            <label class="form-label" for="estado">Estado</label>
-            <input class="form-control" type="text" name="estado" id="estado" placeholder="Activo" />
+            <label class="form-label" for="estado">Estado (A: Acitvo, I: Inactivo)</label>
+            <input class="form-control" type="text" name="estado" id="estado" placeholder="A"  maxlength="1" value="A" />
         </div>
 
         <div class="w-100 d-flex justify-content-center my-5">
@@ -45,8 +45,115 @@
 
 <!-- Editar -->
 <h2 class="w-100 text-center py-3">Editar productos</h2>
-<div class="w-100">
-    
+<div class="w-100 m-0 mb-5">
+    <!-- Encabezados de tabla -->
+    <div class="row justify-content-center m-0 px-5" >
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Código
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Categoría
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Nombre
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Precio
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Cantidad en bodega
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Estado
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            <!-- Hace referencia a las acciones de borrar o editar -->
+        </div>
+    </div>
+
+    {%  for producto in productos %}
+
+        <div class="row justify-content-center m-0 px-5" >
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.codigo}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.categoria}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.nombre}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.precio}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.cantidadBodega}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.estado}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalEditar{{ producto.codigo }}">
+                    Editar
+                </a>
+
+                <a class="btn btn-danger"
+                    href="{{ url_for('productosRouteDelete', codigo=producto.codigo) }}">
+                    Borrar
+                </a>
+            </div>
+        </div>
+
+        <!-- Modal para realizar la actualización del producto -->
+        <div class="modal fade" id="modalEditar{{ producto.codigo }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditar" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="w-75 mx-auto" action="{{ url_for('productosRoutePut', codigo=producto.codigo) }}" method="POST" enctype="multipart/form-data">
+                            <div class="mb-2">
+                                <label class="form-label"  for="producto">Código</label>
+                                <input class="form-control" type="number" name="codigo" id="codigo" placeholder="2" value="{{ producto.codigo }}" />
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" for="categoria">Categoría</label>
+                                <input class="form-control" type="text" name="categoria" id="categoria" placeholder="Talla XXL" value="{{ producto.categoria }}" />
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label class="form-label" for="nombre">Nombre</label>
+                                <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Camiseta de cuadros" value="{{ producto.nombre }}" />
+                            </div>
+                        
+                            <div class="mb-2">
+                                <label class="form-label" for="precio">Precio</label>
+                                <input class="form-control" type="number" name="precio" id="precio" placeholder="50000" value="{{ producto.precio }}" />
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" for="cantidadBodega">Cantidad en bodega</label>
+                                <input class="form-control" type="number" name="cantidadBodega" id="cantidadBodega" placeholder="12" value="{{ producto.cantidadBodega }}" />
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" for="estado">Estado</label>
+                                <input class="form-control" type="text" name="estado" id="estado" placeholder="A" value="{{ producto.estado }}" maxlength="1"/>
+                            </div>
+                        
+                            <div class="w-100 d-flex justify-content-center my-5">
+                                <button type="submit" class="btn btn-primary w-50">Actualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
 </div>
 
 {% endblock %}

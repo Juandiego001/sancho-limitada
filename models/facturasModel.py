@@ -1,7 +1,7 @@
 from server import db
 
 class Facturas(db.Model):
-    cedula = db.Column(db.Integer, primary_key=True)
+    codigo = db.Column(db.Integer, primary_key=True, autoincrement='auto')
     nombre = db.Column(db.String(50), nullable=False)
     direccion = db.Column(db.String(60), nullable=False)
     telefono = db.Column(db.Integer, nullable=False)

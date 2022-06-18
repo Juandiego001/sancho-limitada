@@ -39,7 +39,7 @@ CREATE TABLE PRODUCTOS(
     nombre VARCHAR(60) NOT NULL,
     precio FLOAT NOT NULL,
     cantidadBodega INTEGER NOT NULL,
-    estado VARCHAR(1),
+    estado VARCHAR(1) NOT NULL DEFAULT 'A',
     CONSTRAINT chk_estado_1 CHECK (estado = 'A' OR estado = 'I')
 );
 

@@ -17,7 +17,6 @@ def clientesPost(form, files):
     # Foto del cliente
     foto = files['foto']
     if foto.filename != '':
-        extension = foto.filename.split('.')[1]
         foto.save('./static/' + str(cedula) +  '.jpg')
         foto = 1
     else:
@@ -42,9 +41,31 @@ def clientesPut(cedula, form, files):
     cliente.direccion = direccion
     cliente.telefono = telefono 
 
+    # Verificar si existe la foto y no será cambiada
     foto = files['foto']
-    if foto.filename != '':
-        extension = foto.filename.split('.')[1]
+    if cliente.foto == 1 and foto.filename == '':
+        old = './static/' + str(cedula) + '.jpg'
+        new = './static/' + str(nuevaCedula) + '.jpg'
+        os.rename(old, new)
+
+    # Verificar si no existe foto y se agregará una nueva
+    if cliente.foto == 0 and foto.filename != '':
+        cliente.foto = 1
+        foto.save('./static/' + str(nuevaCedula) +  '.jpg')
+
+    # Verificar si existe la foto, desea ser eliminada y no se ha agregado una nueva foto
+    if cliente.foto == 1 and 'eliminarFoto' in form and foto.filename == '':
+        cliente.foto = 0
+        os.remove('./static/' + str(cedula) +  '.jpg')
+
+    # Verificar si existe la foto, desea ser eliminada y se desea agregar una nueva foto
+    if cliente.foto == 1 and 'eliminarFoto' in form and foto.filename != '':
+        os.remove('./static/' + str(cedula) +  '.jpg')
+        foto.save('./static/' + str(nuevaCedula) +  '.jpg')
+
+    # Verificar si existe la foto, no desea ser eliminada y se desea agregar una nueva foto
+    if cliente.foto == 1 and not('eliminarFoto' in form) and foto.filename != '':
+        os.remove('./static/' + str(cedula) +  '.jpg')
         foto.save('./static/' + str(nuevaCedula) +  '.jpg')
 
     db.session.commit()
@@ -52,10 +73,12 @@ def clientesPut(cedula, form, files):
     return redirect('/clientes')
 
 def clientesDelete(cedula):
-    # Se debe borrar la foto
-    os.remove('./static/' + str(cedula) + '.jpg')
-
     cliente = Clientes.query.get(cedula)
+
+    # Si el cliente existe se debe borrar la foto
+    if cliente.foto == 1:
+        os.remove('./static/' + str(cedula) + '.jpg')
+
     db.session.delete(cliente)
     db.session.commit()
     return redirect('/clientes')

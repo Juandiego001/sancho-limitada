@@ -1,11 +1,17 @@
 from server import db
 
 class Productos(db.Model):
-    cedula = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(50), nullable=False)
-    direccion = db.Column(db.String(60), nullable=False)
-    telefono = db.Column(db.Integer, nullable=False)
-    foto =  db.Column(db.String(400), nullable=True)
+    codigo = db.Column(db.Integer, primary_key=True)
+    categoria = db.Column(db.String(30), nullable=False)
+    nombre = db.Column(db.String(60), nullable=False)
+    precio = db.Column(db.Integer, nullable=False)
+    cantidadBodega =  db.Column(db.String(400), nullable=False)
+    estado = db.Column(db.String(1), nullable=False, default='A')
 
-    def __repr__(self):
-        return 'Cliente: %r' % self
+    def __init__(self, codigo, categoria, nombre, precio, cantidadBodega, estado):
+        self.codigo = codigo
+        self.categoria = categoria
+        self.nombre = nombre
+        self.precio = precio
+        self.cantidadBodega = cantidadBodega
+        self.estado = estado
