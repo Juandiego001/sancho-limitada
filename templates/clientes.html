@@ -87,11 +87,10 @@
             {% endif %}
         </div>
         <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
-            <a class="btn btn-primary me-2" 
-                href="{{ url_for('clientesRoutePut', cedula=cliente.cedula, cliente=cliente) }}">
+            <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalEditar">
                 Editar
             </a>
-
+            
             <a class="btn btn-danger"
                 href="{{ url_for('clientesRouteDelete', cedula=cliente.cedula) }}">
                 Borrar
@@ -99,7 +98,59 @@
         </div>
     </div>
 
-    {% endfor %}
+    <!-- Modal para realizar la actualización del cliente -->
+    <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="w-75 mx-auto" action="{{ url_for('clientesRoutePut', cedula=cliente.cedula) }}" method="POST" enctype="multipart/form-data">
+                        <div class="mb-2">
+                            <label class="form-label"  for="cedula">Cédula</label>
+                            <input class="form-control" type="number" name="cedula" id="cedula" placeholder="1005404989" value="{{ cliente.cedula }}" />
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label" for="nombre">Nombre</label>
+                            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Juan Diego Cobo Cabal" value="{{ cliente.nombre }}" />
+                        </div>
+                    
+                    
+                        <div class="mb-2">
+                            <label class="form-label" for="direccion">Direccion</label>
+                            <input class="form-control" type="text" name="direccion" id="direccion" placeholder="Calle 57N #34-12" value="{{ cliente.direccion }}" />
+                        </div>
+                    
+                    
+                        <div class="mb-2">
+                            <label class="form-label" for="telefono">Teléfono</label>
+                            <input class="form-control" type="number" name="telefono" id="telefono" placeholder="3148240987" value="{{ cliente.telefono }}" />
+                        </div>
+                    
+                        <div class="mb-2">
+                            <label class="form-label">Foto</label>
+                            {% if cliente.foto == 1 %}
+                                <br><img class="w-50 mb-3" src="{{ url_for('static', filename=cliente.cedula|string + '.jpg')}}" /><br>
+                            {% else %}
+                                No tiene
+                            {% endif %}
+                            <label class="form-label" for="foto">Agregar nueva foto</label>
+                            <input class="form-control" type="file" name="foto" id="foto" />
+                        </div>
+                    
+                        <div class="w-100 d-flex justify-content-center my-5">
+                            <button type="submit" class="btn btn-primary w-50">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
 </div>
 
 

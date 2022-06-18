@@ -10,9 +10,9 @@ def clientesRouteGet():
 def clientesRoutePost():
     return clientesPost(request.form, request.files)
 
-@app.route('/clientes-put')
-def clientesRoutePut(cedula, cliente):
-    return clientesPut(request.form)
+@app.route('/clientes-put/<cedula>', methods=['POST', 'GET'])
+def clientesRoutePut(cedula):
+    return clientesPut(cedula, request.form, request.files)
 
 @app.route('/clientes-delete/<cedula>')
 def clientesRouteDelete(cedula):
