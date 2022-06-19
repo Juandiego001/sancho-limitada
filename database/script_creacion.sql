@@ -24,7 +24,7 @@ CREATE TABLE FACTURAS(
     cedula_cliente BIGINT NOT NULL,
     fecha DATE NOT NULL,
     metodo VARCHAR(30) NOT NULL,
-    valorTotal FLOAT NULL,
+    valorTotal FLOAT NOT NULL DEFAULT 0.0,
 
     PRIMARY KEY(codigo),
     INDEX (cedula_cliente),
@@ -71,7 +71,7 @@ VALUES(321, 'Fulano', 'Calle 29 #23-08', 666591315);
 -- Factura que registra la compra de 1 producto 10 veces
 -- al cliente de cédula 123
 INSERT INTO PRODUCTOS VALUES(1, 'Talla XXL', 'Camisa', 50000, 100, 'A');
-INSERT INTO FACTURAS(cedula_cliente, fecha, metodo) VALUES(123, '2022-06-17', 'Credit card');
+INSERT INTO FACTURAS(cedula_cliente, fecha, metodo) VALUES(11, '2022-06-17', 'Credit card');
 INSERT INTO DETALLES(codigo_factura, codigo_producto, cantidad)
 VALUES(1, 1, 10);
 

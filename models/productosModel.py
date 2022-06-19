@@ -1,6 +1,7 @@
 from server import db
 
 class Productos(db.Model):
+    __tablename__ = 'productos'
     codigo = db.Column(db.Integer, primary_key=True)
     categoria = db.Column(db.String(30), nullable=False)
     nombre = db.Column(db.String(60), nullable=False)

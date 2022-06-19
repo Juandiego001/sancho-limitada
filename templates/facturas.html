@@ -1,4 +1,189 @@
 {% extends 'layout.html' %}
 {% block body %}
+    <!-- Registrar -->
+    <h2 class="w-100 text-center py-3">Registrar facturas</h2>
+    <div class="w-100">
+        <form class="w-75 mx-auto" method="POST" action="{{ url_for('facturasRoutePost') }}">
+            <div class="mb-2">
+                <label class="form-label" for="cedula_cliente">Cédula del cliente</label>
+                <input class="form-control" type="text" name="cedula_cliente" id="cedula_cliente" placeholder="Ej: Talla XXL" required />
+            </div>
 
+            <div class="mb-2">
+                <label class="form-label" for="metodo">Método</label>
+                <input class="form-control" type="number" name="metodo" id="metodo" placeholder="4000" required />
+            </div>
+
+            {% for productoAgregado in productosAgregados %}
+                <p>Productos</p>
+                <div class="">
+                    <p>Código: {{ productoAgregado.codigo }}</p>
+                </div>
+            {% endfor %}
+
+            <div class="w-100 d-flex justify-content-center align-items-center my-5">
+                <button class="btn btn-primary me-3 w-25" data-bs-toggle="modal" data-bs-target="#modalProductoRegistro">Agregar producto</button>
+                <button type="submit" class="btn btn-primary w-25">Registrar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Editar -->
+    <h2 class="w-100 text-center py-3">Editar facturas</h2>
+    <div class="w-100 m-0 mb-5">
+        <!-- Encabezados de tabla -->
+        <div class="row justify-content-center m-0 px-5" >
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                Cédula de cliente
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                Fecha
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                Método
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                <!-- Hace referencia a las acciones de borrar o editar -->
+            </div>
+        </div>
+
+        {%  for factura in facturas %}
+            <div class="row justify-content-center m-0 px-5" >
+                <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                    {{factura.cedula_cliente}}
+                </div>
+                <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                    {{factura.metodo}}
+                </div>
+                <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                    <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalEditar{{ factura.codigo }}">
+                        Editar
+                    </a>
+
+                    <a class="btn btn-danger me-2"
+                        href="{{ url_for('facturasRouteDelete', codigo=factura.codigo) }}">
+                        Borrar
+                    </a>
+
+                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalProductoActualizar">
+                        Agregar producto
+                    </a>
+                </div>
+            </div>
+
+            <!-- Modal para realizar la actualización del factura -->
+            <div class="modal fade" id="modalEditar{{ factura.codigo }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditar" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="w-75 mx-auto" action="{{ url_for('facturasRoutePut', codigo=factura.codigo) }}" method="POST">
+                                <div class="mb-2">
+                                    <label class="form-label" for="cedula_cliente">Cédula del cliente</label>
+                                    <input class="form-control" type="number" name="cedula_cliente" id="cedula_cliente" placeholder="1005219303" value="{{ factura.cedula_cliente }}" />
+                                </div>                            
+                            
+                                <div class="mb-2">
+                                    <label class="form-label" for="metodo">Método</label>
+                                    <input class="form-control" type="text" name="metodo" id="metodo" placeholder="Efectivo" value="{{ factura.metodo }}" />
+                                </div>                            
+                            
+                                <div class="w-100 d-flex justify-content-center my-5">
+                                    <a class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#modalProductoActualizar">Agregar producto</a>
+                                    <button type="submit" class="btn btn-primary w-50">Actualizar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para agregar productos a la factura -->
+            <div class="modal fade" id="modalProductoActualizar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalProductoActualizacion" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Agregar producto (por código o nombre)</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="w-75 mx-auto" action="{{ url_for('facturasRouteProducto', codigo=factura.codigo) }}" method="POST">
+                                <div class="mb-2">
+                                    <label class="form-label" for="codigoProducto">Código del producto</label>
+                                    <select class="form-select">
+                                        {%  for producto in productos %}
+                                            <option value="{{ producto.codigo }}">{{ producto.codigo }}</option>
+                                        {%  endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label" for="nombreProducto">Nombre del producto</label>
+                                    <select class="form-select">
+                                        {%  for producto in productos %}
+                                            <option value="{{ producto.nombre }}">{{ producto.nombre }}</option>
+                                        {%  endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label">Cantidad</label>
+                                    <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="12" />
+                                </div>
+                            
+                                <div class="w-100 d-flex justify-content-center my-5">
+                                    <button type="submit" class="btn btn-primary w-50">Agregar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        
+        <!-- Modal para agregar productos a la factura (EN EL REGISTRO) -->
+        <div class="modal fade" id="modalProductoRegistro" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalProductoRegistro" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar producto (por código o nombre)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="w-75 mx-auto" action="{{ url_for('facturasRouteProducto') }}" method="POST">
+                            <div class="mb-2">
+                                <label class="form-label" for="codigoProducto">Código del producto</label>
+                                <select name="codigoProducto" id="codigoProducto" class="form-select">
+                                    {%  for producto in productos %}
+                                        <option value="{{ producto.codigo }}">{{ producto.codigo }}</option>
+                                    {%  endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label" for="nombreProducto">Nombre del producto</label>
+                                <select name="nombreProducto" id="nombreProducto" class="form-select">
+                                    {%  for producto in productos %}
+                                        <option value="{{ producto.nombre }}">{{ producto.nombre }}</option>
+                                    {%  endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label">Cantidad</label>
+                                <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="12" />
+                            </div>
+                        
+                            <div class="w-100 d-flex justify-content-center my-5">
+                                <button type="submit" class="btn btn-primary w-50">Agregar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
