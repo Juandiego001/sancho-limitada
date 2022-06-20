@@ -155,4 +155,27 @@
 {% endfor %}
 </div>
 
+<!-- Clientes ordenados por cantidad de compras -->
+<h2 class="w-100 text-center py-3">Clientes ordenados por cantidad de compras</h2>
+<div class="container mb-5 text-center">
+    <div class="container row">
+        <div class="col d-flex justify-content-center border border-dark py-3">
+            Cédula del cliente
+        </div>
+        <div class="col d-flex justify-content-center border border-dark py-3">
+            Cantidad de compras
+        </div>
+    </div>
+    {%  for clienteOrdenado in clientesOrdenados %}
+        <div class="container row">
+            <div class="col d-flex justify-content-center border border-dark py-2">
+                {{ clienteOrdenado.cedula }}
+            </div>
+            <div class="col d-flex justify-content-center border border-dark py-2">
+                {{ clienteOrdenado.cantidad }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock %}

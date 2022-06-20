@@ -6,26 +6,92 @@
         <form class="w-75 mx-auto" method="POST" action="{{ url_for('facturasRoutePost') }}">
             <div class="mb-2">
                 <label class="form-label" for="cedula_cliente">Cédula del cliente</label>
-                <input class="form-control" type="text" name="cedula_cliente" id="cedula_cliente" placeholder="Ej: Talla XXL" required />
+                <input class="form-control" type="number" name="cedula_cliente" id="cedula_cliente" placeholder="1005219303" required />
             </div>
 
-            <div class="mb-2">
+            <div class="mb-4">
                 <label class="form-label" for="metodo">Método</label>
-                <input class="form-control" type="number" name="metodo" id="metodo" placeholder="4000" required />
+                <input class="form-control" type="text" name="metodo" id="metodo" placeholder="Efectivo" required />
             </div>
 
+            <p>Productos</p>
+            <div class="row w-100">
+                <div class="col border border-dark text-center py-2">
+                    Código
+                </div>
+                <div class="col border border-dark text-center py-2">
+                    Nombre
+                </div>
+                <div class="col border border-dark text-center py-2">
+                    Cantidad
+                </div>
+                <div class="col border border-dark">
+                    <!-- Columna que hace referencia a las acciones -->
+                </div>
+            </div>
             {% for productoAgregado in productosAgregados %}
-                <p>Productos</p>
-                <div class="">
-                    <p>Código: {{ productoAgregado.codigo }}</p>
+                <div class="row w-100">
+                    <div class="col border border-dark d-flex justify-content-center align-items-center py-2">
+                        <p class="m-0">{{ productoAgregado.codigoProducto }}</p>
+                    </div>
+                    <div class="col border border-dark d-flex justify-content-center align-items-center py-2">
+                        <p class="m-0">{{ productoAgregado.nombreProducto }}</p>
+                    </div>
+                    <div class="col border border-dark d-flex justify-content-center align-items-center py-2">
+                        <p class="m-0">{{ productoAgregado.cantidadProducto }}</p>
+                    </div>
+                    <div class="col border border-dark d-flex justify-content-center align-items-center">
+                        <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#modalProductoEditar{{ productosAgregados.index(productoAgregado) }}" >Editar</a>
+                        <a class="btn btn-danger" href="{{ url_for('facturasRouteProductoDelete', index=productosAgregados.index(productoAgregado)) }}" >Remover</a>
+                    </div>
                 </div>
             {% endfor %}
 
             <div class="w-100 d-flex justify-content-center align-items-center my-5">
-                <button class="btn btn-primary me-3 w-25" data-bs-toggle="modal" data-bs-target="#modalProductoRegistro">Agregar producto</button>
+                <a class="btn btn-primary me-3 w-25" data-bs-toggle="modal" data-bs-target="#modalProductoRegistro">Agregar producto</a>
                 <button type="submit" class="btn btn-primary w-25">Registrar</button>
             </div>
         </form>
+
+        {% for productoAgregado in productosAgregados %}
+            <!-- Modal para editar cada productoAgregado -->
+            <div class="modal fade" id="modalProductoEditar{{ productosAgregados.index(productoAgregado) }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalProductoEditar{{ productosAgregados.index(productoAgregado) }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="w-75 mx-auto" action="{{ url_for('facturasRouteProductoPut', index=productosAgregados.index(productoAgregado)) }}" method="POST">
+                                <div class="mb-2">
+                                    <label class="form-label" for="nombreProductoEditar">Nombre del producto</label>
+                                    <select name="nombreProducto" id="nombreProducto" class="form-select">
+                                        {%  for producto in productos %}
+                                            <!--  Para marcarlo como el seleccionado -->
+                                            {%  if (producto.estado == 'A' and producto.nombre == productoAgregado.nombreProducto) %}
+                                                <option value="{{ producto.nombre }}" selected>{{ producto.nombre }}</option>
+                                            {% else %}
+                                                <option value="{{ producto.nombre }}">{{ producto.nombre }}</option>
+                                            {% endif %}
+                                        {%  endfor %}
+                                    </select>
+                                </div>                            
+                            
+                                <div class="mb-2">
+                                    <label class="form-label" for="cantidadProducto">Cantidad</label>
+                                    <input class="form-control" type="text" name="cantidadProducto" id="cantidadProducto" placeholder="12" value="{{ productoAgregado.cantidadProducto }}" />
+                                </div>
+                            
+                                <div class="w-100 d-flex justify-content-center my-5">
+                                    <button type="submit" class="btn btn-primary w-50">Actualizar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
     <!-- Editar -->
@@ -53,6 +119,9 @@
                     {{factura.cedula_cliente}}
                 </div>
                 <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                    {{factura.fecha}}
+                </div>
+                <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
                     {{factura.metodo}}
                 </div>
                 <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
@@ -65,13 +134,13 @@
                         Borrar
                     </a>
 
-                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalProductoActualizar">
-                        Agregar producto
+                    <a class="btn btn-primary" href="{{ url_for('facturasRouteDetalles', codigo=factura.codigo) }}">
+                        Ver detalles
                     </a>
                 </div>
             </div>
 
-            <!-- Modal para realizar la actualización del factura -->
+            <!-- Modal para editar la factura -->
             <div class="modal fade" id="modalEditar{{ factura.codigo }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditar" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -89,53 +158,10 @@
                                 <div class="mb-2">
                                     <label class="form-label" for="metodo">Método</label>
                                     <input class="form-control" type="text" name="metodo" id="metodo" placeholder="Efectivo" value="{{ factura.metodo }}" />
-                                </div>                            
+                                </div>
                             
                                 <div class="w-100 d-flex justify-content-center my-5">
-                                    <a class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#modalProductoActualizar">Agregar producto</a>
                                     <button type="submit" class="btn btn-primary w-50">Actualizar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal para agregar productos a la factura -->
-            <div class="modal fade" id="modalProductoActualizar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalProductoActualizacion" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Agregar producto (por código o nombre)</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form class="w-75 mx-auto" action="{{ url_for('facturasRouteProducto', codigo=factura.codigo) }}" method="POST">
-                                <div class="mb-2">
-                                    <label class="form-label" for="codigoProducto">Código del producto</label>
-                                    <select class="form-select">
-                                        {%  for producto in productos %}
-                                            <option value="{{ producto.codigo }}">{{ producto.codigo }}</option>
-                                        {%  endfor %}
-                                    </select>
-                                </div>
-
-                                <div class="mb-2">
-                                    <label class="form-label" for="nombreProducto">Nombre del producto</label>
-                                    <select class="form-select">
-                                        {%  for producto in productos %}
-                                            <option value="{{ producto.nombre }}">{{ producto.nombre }}</option>
-                                        {%  endfor %}
-                                    </select>
-                                </div>
-
-                                <div class="mb-2">
-                                    <label class="form-label">Cantidad</label>
-                                    <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="12" />
-                                </div>
-                            
-                                <div class="w-100 d-flex justify-content-center my-5">
-                                    <button type="submit" class="btn btn-primary w-50">Agregar</button>
                                 </div>
                             </form>
                         </div>
@@ -155,26 +181,19 @@
                     <div class="modal-body">
                         <form class="w-75 mx-auto" action="{{ url_for('facturasRouteProducto') }}" method="POST">
                             <div class="mb-2">
-                                <label class="form-label" for="codigoProducto">Código del producto</label>
+                                <label class="form-label" for="codigoProducto">Nombre del producto</label>
                                 <select name="codigoProducto" id="codigoProducto" class="form-select">
                                     {%  for producto in productos %}
-                                        <option value="{{ producto.codigo }}">{{ producto.codigo }}</option>
-                                    {%  endfor %}
-                                </select>
-                            </div>
-
-                            <div class="mb-2">
-                                <label class="form-label" for="nombreProducto">Nombre del producto</label>
-                                <select name="nombreProducto" id="nombreProducto" class="form-select">
-                                    {%  for producto in productos %}
-                                        <option value="{{ producto.nombre }}">{{ producto.nombre }}</option>
+                                        {% if producto.estado == 'A' %}
+                                            <option value="{{ producto.codigo }}">{{ producto.nombre }}</option>
+                                        {% endif %}
                                     {%  endfor %}
                                 </select>
                             </div>
 
                             <div class="mb-2">
                                 <label class="form-label">Cantidad</label>
-                                <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="12" />
+                                <input class="form-control" type="number" name="cantidadProducto" id="cantidadProducto" placeholder="12" required />
                             </div>
                         
                             <div class="w-100 d-flex justify-content-center my-5">

@@ -1,6 +1,6 @@
 from flask import request, render_template
 from server import app
-from controllers.productosController import productosGet, productosPost, productosPut, productosDelete
+from controllers.productosController import *
 
 
 @app.route('/productos')
@@ -18,3 +18,13 @@ def productosRoutePut(codigo):
 @app.route('/productos-delete/<codigo>')
 def productosRouteDelete(codigo):
     return productosDelete(codigo)
+
+# Método para activar un producto
+@app.route('/productos-activar/<codigo>', methods=['GET', 'POST'])
+def productosRouteActivar(codigo):
+    return productosActivar(codigo)
+
+# Método para desactivar un producto
+@app.route('/productos-desactivar/<codigo>', methods=['GET', 'POST'])
+def productosRouteDesactivar(codigo):
+    return productosDesactivar(codigo)

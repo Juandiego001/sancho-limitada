@@ -12,8 +12,7 @@ class Facturas(db.Model):
     metodo = db.Column(db.String(30), nullable=False)
     valorTotal =  db.Column(db.Float, nullable=False, default=0.0)
 
-    def __init__(self, codigo, cedula_cliente, fecha, metodo, valorTotal):
-        self.codigo = codigo
+    def __init__(self, cedula_cliente, fecha, metodo, valorTotal):
         self.cedula_cliente = cedula_cliente
         self.fecha = fecha
         self.metodo = metodo

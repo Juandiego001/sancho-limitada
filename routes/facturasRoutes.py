@@ -1,6 +1,6 @@
 from flask import request, render_template
 from server import app
-from controllers.facturasController import facturasGet, facturasPost, facturasPut, facturasDelete, facturasCodigo, facturasProducto
+from controllers.facturasController import *
 
 @app.route('/facturas')
 def facturasRouteGet():
@@ -27,3 +27,20 @@ def facturasRouteCodigo(codigo):
 @app.route('/facturas-productos', methods=['GET', 'POST'])
 def facturasRouteProducto():
     return facturasProducto(request.form)
+
+# Actualizar productos agregados a una factura
+@app.route('/facturas-productos-put/<index>', methods=['GET', 'POST'])
+def facturasRouteProductoPut(index):
+    index = int(index)
+    return facturasProductoPut(index, request.form)
+
+# Remover productos agregados a una factura
+@app.route('/facturas-productos-delete/<index>')
+def facturasRouteProductoDelete(index):
+    index = int(index)
+    return facturasProductoDelete(index)
+
+# Ver detalles de una factura
+@app.route('/facturas-detalles/<codigo>')
+def facturasRouteDetalles(codigo):
+    return facturasDetalles(codigo)

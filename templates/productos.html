@@ -97,10 +97,22 @@
                     Editar
                 </a>
 
-                <a class="btn btn-danger"
+                <a class="btn btn-danger me-2 "
                     href="{{ url_for('productosRouteDelete', codigo=producto.codigo) }}">
                     Borrar
                 </a>
+                
+                {%  if producto.estado == 'A' %}
+                    <a class="btn btn-warning"
+                        href="{{ url_for('productosRouteDesactivar', codigo=producto.codigo) }}">
+                        Desactivar
+                    </a>
+                {% else %}
+                        <a class="btn btn-success"
+                        href="{{ url_for('productosRouteActivar', codigo=producto.codigo) }}">
+                        Activar
+                    </a>
+                {% endif %}
             </div>
         </div>
 
@@ -153,6 +165,47 @@
             </div>
         </div>
 
+    {% endfor %}
+
+<h2 class="w-100 text-center py-3 mt-4">Productos activos</h2>
+<div class="w-100">
+    <!-- Encabezados de tabla -->
+    <div class="row justify-content-center m-0 px-5" >
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Código
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Categoría
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Nombre
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Precio
+        </div>
+        <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+            Cantidad en bodega
+        </div>
+    </div>
+
+    {%  for producto in productosActivos %}
+        <div class="row justify-content-center m-0 px-5" >
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.codigo}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.categoria}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.nombre}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.precio}}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2">
+                {{producto.cantidadBodega}}
+            </div>
+        </div>
     {% endfor %}
 </div>
 

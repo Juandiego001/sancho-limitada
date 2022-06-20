@@ -1,3 +1,4 @@
+# Este archivo de rutas no fue necesario
 from flask import request, render_template
 from server import app
 

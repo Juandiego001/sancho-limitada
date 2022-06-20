@@ -1,11 +1,30 @@
 from flask import render_template, redirect, Blueprint
 from models.clientesModel import Clientes
+from models.facturasModel import Facturas
 from server import db
 import os
 
 def clientesGet():
     clientes = Clientes.query.all()
-    return render_template('clientes.html', clientes=clientes)
+
+    # Clientes ordenados por compras
+    clientesOrdenados = []
+    queryClientes = db.session.query(Facturas.cedula_cliente, db.func.count(Facturas.cedula_cliente)).\
+        group_by(Facturas.cedula_cliente).\
+        order_by(db.desc(db.func.count(Facturas.cedula_cliente)))
+
+    resultadosQuery = db.session.execute(queryClientes)
+
+    for cedulaCliente in resultadosQuery.scalars():
+        queryCantidad = db.session.query(db.func.count(Facturas.cedula_cliente))\
+            .filter_by(cedula_cliente=cedulaCliente)
+
+        cantidades = db.session.execute(queryCantidad)
+        for cantidad in cantidades.scalars():
+            clientesOrdenados.append({'cedula': cedulaCliente, 'cantidad': cantidad})
+        
+
+    return render_template('clientes.html', clientes=clientes, clientesOrdenados=clientesOrdenados)
 
 def clientesPost(form, files):
     # Datos del cliente
@@ -82,4 +101,3 @@ def clientesDelete(cedula):
     db.session.delete(cliente)
     db.session.commit()
     return redirect('/clientes')
-    

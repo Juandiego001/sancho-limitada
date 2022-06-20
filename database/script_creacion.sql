@@ -77,3 +77,8 @@ VALUES(1, 1, 10);
 
 -- Obtener todas las facturas de un cliente con el valor total a pagar
 SELECT C.cedula, F.valorTotal FROM CLIENTES C JOIN FACTURAS F ON C.cedula = F.cedula_cliente WHERE C.cedula = 123;
+
+-- Obtener los clientes en orden de cantidad de compras
+SELECT cedula_cliente, COUNT(*) FROM FACTURAS 
+    GROUP BY cedula_cliente
+    ORDER BY COUNT(*) DESC;

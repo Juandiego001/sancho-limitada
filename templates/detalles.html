@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <h2 class="w-100 text-center py-3">Detalles de la factura con código {{ codigo_factura }}</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2 text-center">
+                Código del producto
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2 text-center">
+                Nombre del producto
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2 text-center">
+                Precio del producto
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2 text-center">
+                Cantidad del producto
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2 text-center">
+                Total a pagar por el producto
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark py-2 text-center">
+                <!-- Para las acciones y mostrar el valor total -->
+                Valor total
+            </div>
+        </div>
+        {% for detalle in detallesProducto %}
+        <div class="row">
+            <div class="col d-flex justify-content-center align-items-center border border-dark">
+                {{ detalle.codigo_producto }}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark">
+                {{ detalle.nombre }}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark">
+                {{ detalle.precio }}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark">
+                {{ detalle.cantidad }}
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark">
+                {{ detalle.cantidadPrecio }}
+            </div>
+            <div class="col d-flex justify-content-center border border-dark py-2">
+                <!-- Para mostrar el valor total -->
+            </div>
+        </div>
+        {%  endfor %}
+        <div class="row">
+            <div class="col d-flex justify-content-center align-items-center border border-dark">
+                Valor total
+            </div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark"></div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark"></div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark"></div>
+            <div class="col d-flex justify-content-center align-items-center border border-dark"></div>
+            <div class="col d-flex justify-content-center border border-dark py-2">
+                {{ valorTotal }}
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

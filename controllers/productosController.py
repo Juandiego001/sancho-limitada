@@ -4,7 +4,17 @@ from server import db
 
 def productosGet():
     productos = Productos.query.all()
-    return render_template('productos.html', productos=productos)
+
+    print('Prueba')
+    print(productos)
+
+    # Debemos obtener los productos que están activos
+    productosActivos = []
+    for producto in productos:
+        if producto.estado == 'A':
+            productosActivos.append(producto)
+
+    return render_template('productos.html', productos=productos, productosActivos=productosActivos)
 
 def productosPost(form):
     codigo = form['codigo']
@@ -51,4 +61,17 @@ def productosDelete(codigo):
     db.session.delete(producto)
     db.session.commit()
     return redirect('/productos')
-    
+
+# Método para activar un producto
+def productosActivar(codigo):
+    producto = Productos.query.get(codigo)
+    producto.estado = 'A'
+    db.session.commit()
+    return redirect('/productos')
+
+# Métodos para desactivar un producto
+def productosDesactivar(codigo):
+    producto = Productos.query.get(codigo)
+    producto.estado = 'I'
+    db.session.commit()
+    return redirect('/productos')
